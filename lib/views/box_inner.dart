@@ -42,18 +42,19 @@ setFocus(int index, Direction direction){
   });
   }
 
-  clearFocus(){
-  blockChars.forEach((element) {
-    element.isExist=false;
-  });
+  clearFocus() {
+    blockChars.forEach((element) {
+      element.isFocus = false;
+    });
   }
 
-  clearExist(){
-  blockChars.forEach((element) {
-    element.isFocus=false;
-  });
+  clearExist() {
+    blockChars.forEach((element) {
+      element.isExist = false;
+    });
+  }
   }
 
-}
+
 
 enum Direction {horizontal,vertical}
