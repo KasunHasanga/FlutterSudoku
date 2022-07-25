@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:quiver/iterables.dart';
 import 'package:sudoku_puzzle/views/block_char.dart';
@@ -30,7 +29,7 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
 
   void generateSudoku() {
     isFinish = false;
-    focusClass = new FocusClass();
+    focusClass = FocusClass();
     tapBoxIndex = null;
     generatePuzzle();
     checkFinish();
