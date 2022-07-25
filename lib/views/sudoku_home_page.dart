@@ -7,7 +7,8 @@ import 'package:sudoku_puzzle/views/box_inner.dart';
 import 'package:sudoku_puzzle/views/focus_class.dart';
 
 class SudokuHomePage extends StatefulWidget {
-  const SudokuHomePage({Key? key}) : super(key: key);
+  int difficultyStatus;
+   SudokuHomePage({Key? key,required this.difficultyStatus}) : super(key: key);
 
   @override
   State<SudokuHomePage> createState() => _SudokuHomePageState();
@@ -22,8 +23,6 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
   @override
   void initState() {
     generateSudoku();
-
-    // TODO: implement initState
     super.initState();
   }
 
@@ -196,7 +195,7 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
   generatePuzzle() {
     // install plugins sudoku generator to generate one
     boxInners.clear();
-    var sudokuGenerator = SudokuGenerator(emptySquares: 3); //54
+    var sudokuGenerator = SudokuGenerator(emptySquares: widget.difficultyStatus); //54
     // then we populate to get a possible cmbination
     // Quiver for easy populate collection using partition
     List<List<List<int>>> completes = partition(sudokuGenerator.newSudokuSolved,

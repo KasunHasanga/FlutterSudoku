@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:sudoku_puzzle/views/middle_screen/middle_screen.dart';
 import 'package:sudoku_puzzle/views/sudoku_home_page.dart';
 
 
@@ -13,7 +14,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // redirectHomePage();
+    redirectHomePage();
     super.initState();
   }
 
@@ -22,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => const SudokuHomePage()),
+            builder: (context) => const MiddleScreen()),
       );
     });
   }
