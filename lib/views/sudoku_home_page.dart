@@ -10,7 +10,7 @@ import 'package:sudoku_puzzle/services/shared_preferences.dart'
     as shared_preferences;
 
 class SudokuHomePage extends StatefulWidget {
-  int difficultyStatus;
+ int difficultyStatus;
   SudokuHomePage({Key? key, required this.difficultyStatus}) : super(key: key);
 
   @override
@@ -50,7 +50,7 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
         ),
         actions: [
           ElevatedButton(
-              onPressed: () => generateSudoku(), child: Icon(Icons.refresh)),
+              onPressed: () => generateSudoku(), child: const Icon(Icons.refresh)),
         ],
       ),
       backgroundColor: Colors.blueAccent,
@@ -66,19 +66,19 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
                       margin: EdgeInsets.all(20),
                       // height: 400,
                       color: Colors.blueGrey,
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       width: double.maxFinite,
                       alignment: Alignment.center,
                       child: GridView.builder(
                         itemCount: boxInners.length,
                         shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           childAspectRatio: 1,
                           crossAxisSpacing: 5,
                           mainAxisSpacing: 5,
                         ),
-                        physics: ScrollPhysics(),
+                        physics: const ScrollPhysics(),
                         itemBuilder: (buildContext, index) {
                           BoxInner boxInner = boxInners[index];
 
@@ -95,7 +95,7 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
                                 crossAxisSpacing: 2,
                                 mainAxisSpacing: 2,
                               ),
-                              physics: ScrollPhysics(),
+                              physics: const ScrollPhysics(),
                               itemBuilder: (buildContext, indexChar) {
                                 BlockChar blockChar =
                                     boxInner.blockChars[indexChar];
@@ -104,21 +104,23 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
 
                                 // change color base condition
 
-                                if (isFinish)
+                                if (isFinish) {
                                   color = Colors.green;
-                                else if (blockChar.isFocus &&
-                                    blockChar.text != "")
+                                } else if (blockChar.isFocus &&
+                                    blockChar.text != "") {
                                   color = Colors.brown.shade100;
-                                else if (blockChar.isDefault)
+                                } else if (blockChar.isDefault) {
                                   color = Colors.grey.shade400;
+                                }
 
                                 if (tapBoxIndex == "${index}-${indexChar}" &&
                                     !isFinish) color = Colors.blue.shade100;
 
-                                if (this.isFinish)
+                                if (this.isFinish) {
                                   colorText = Colors.white;
-                                else if (blockChar.isExist)
+                                } else if (blockChar.isExist) {
                                   colorText = Colors.red;
+                                }
 
                                 return Container(
                                   color: color,
@@ -141,7 +143,7 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
                     ),
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         alignment: Alignment.center,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -159,13 +161,13 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
                                   crossAxisSpacing: 5,
                                   mainAxisSpacing: 5,
                                 ),
-                                physics: ScrollPhysics(),
+                                physics: const ScrollPhysics(),
                                 itemBuilder: (buildContext, index) {
                                   return ElevatedButton(
                                     onPressed: () => setInput(index + 1),
                                     child: Text(
                                       "${index + 1}",
-                                      style: TextStyle(color: Colors.black),
+                                      style: const TextStyle(color: Colors.black),
                                     ),
                                     style: ButtonStyle(
                                       backgroundColor:
@@ -178,11 +180,11 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
                             ),
                             Expanded(
                               child: Container(
-                                margin: EdgeInsets.only(left: 10),
+                                margin: const EdgeInsets.only(left: 10),
                                 child: ElevatedButton(
                                   onPressed: () => setInput(null),
                                   child: Container(
-                                    child: Text(
+                                    child: const Text(
                                       "Clear",
                                       style: TextStyle(color: Colors.black),
                                     ),

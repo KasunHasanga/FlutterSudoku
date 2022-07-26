@@ -9,7 +9,7 @@ class AboutUs extends StatefulWidget {
 
 class _AboutUsState extends State<AboutUs> {
   // List<Item> _books = generateItems(3);
-  List<Item> _rules = <Item>[
+  final List<Item> _rules = <Item>[
     Item(
         headerValue:
             "Rule 1 - Each row must contain the numbers from 1 to 9, without repetitions",

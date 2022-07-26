@@ -21,7 +21,6 @@ class _MiddleScreenState extends State<MiddleScreen> {
 
   void initilization() async {
     playerLevel = await shared_preferences.getPlayerLevel();
-    print(playerLevel);
     setState(() {});
   }
 
@@ -32,7 +31,7 @@ class _MiddleScreenState extends State<MiddleScreen> {
       appBar: AppBar(
         elevation: 0,
         leading: GestureDetector(
-          child: Icon(Icons.settings),
+          child: const Icon(Icons.settings),
           onTap: () {
             Navigator.push(
               context,
@@ -59,7 +58,7 @@ class _MiddleScreenState extends State<MiddleScreen> {
                 itemBuilder: (context, index) {
                   return levelWidget(index);
                 },
-                physics: ScrollPhysics(),
+                physics: const ScrollPhysics(),
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 itemCount: 20,
@@ -74,11 +73,11 @@ class _MiddleScreenState extends State<MiddleScreen> {
   Widget levelWidget(int index) {
     return ListTile(
       leading: playerLevel < index + 1
-          ? Icon(
+          ? const Icon(
               Icons.lock,
               color: Colors.red,
             )
-          : Icon(
+          : const Icon(
               Icons.lock_open_sharp,
               color: Colors.green,
             ),
@@ -95,14 +94,12 @@ class _MiddleScreenState extends State<MiddleScreen> {
                     )),
           );
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("You haven`t unlock this level yet"),
           ));
         }
-        print(result);
         if (result == true) {
           initilization();
-          print("trune");
         }
       },
     );
