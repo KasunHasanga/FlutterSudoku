@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sudoku_puzzle/views/middle_screen/middle_screen.dart';
-import 'package:sudoku_puzzle/views/sudoku_home_page.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -39,12 +38,13 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text("Tic Tac Toe",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 28),),
+
+        const Text("Tic Tac Toe",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 28),),
             Center(
               child: Image.asset(
                 'assests/playstore.png',
-                height: MediaQuery.of(context).size.width *2/ 3,
-                width: MediaQuery.of(context).size.width *2/ 3,
+                height: 300,
+                width:300,
                 alignment: Alignment.center,
               ),
             ),

@@ -1,14 +1,17 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:quiver/iterables.dart';
 import 'package:sudoku_puzzle/views/block_char.dart';
 import 'package:sudoku_solver_generator/sudoku_solver_generator.dart';
 import 'package:sudoku_puzzle/views/box_inner.dart';
 import 'package:sudoku_puzzle/views/focus_class.dart';
+import 'package:sudoku_puzzle/services/shared_preferences.dart'
+    as shared_preferences;
 
 class SudokuHomePage extends StatefulWidget {
-  int difficultyStatus;
-   SudokuHomePage({Key? key,required this.difficultyStatus}) : super(key: key);
+ int difficultyStatus;
+  SudokuHomePage({Key? key, required this.difficultyStatus}) : super(key: key);
 
   @override
   State<SudokuHomePage> createState() => _SudokuHomePageState();
@@ -42,151 +45,175 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+          onPressed: () => Navigator.pop(context, true),
+        ),
         actions: [
           ElevatedButton(
-              onPressed: () => generateSudoku(), child: Icon(Icons.refresh)),
+              onPressed: () => generateSudoku(), child: const Icon(Icons.refresh)),
         ],
       ),
       backgroundColor: Colors.blueAccent,
       body: SafeArea(
-        child: Container(
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.all(20),
-                // height: 400,
-                color: Colors.blueGrey,
-                padding: EdgeInsets.all(5),
-                width: double.maxFinite,
+        child: Stack(
+          children: [
+            Positioned(
+              child: Container(
                 alignment: Alignment.center,
-                child: GridView.builder(
-                  itemCount: boxInners.length,
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 1,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 5,
-                  ),
-                  physics: ScrollPhysics(),
-                  itemBuilder: (buildContext, index) {
-                    BoxInner boxInner = boxInners[index];
-
-                    return Container(
-                      color: Colors.red.shade100,
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(20),
+                      // height: 400,
+                      color: Colors.blueGrey,
+                      padding: const EdgeInsets.all(5),
+                      width: double.maxFinite,
                       alignment: Alignment.center,
                       child: GridView.builder(
-                        itemCount: boxInner.blockChars.length,
+                        itemCount: boxInners.length,
                         shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           childAspectRatio: 1,
-                          crossAxisSpacing: 2,
-                          mainAxisSpacing: 2,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 5,
                         ),
-                        physics: ScrollPhysics(),
-                        itemBuilder: (buildContext, indexChar) {
-                          BlockChar blockChar = boxInner.blockChars[indexChar];
-                          Color color = Colors.yellow.shade100;
-                          Color colorText = Colors.black;
-
-                          // change color base condition
-
-                          if (isFinish)
-                            color = Colors.green;
-                          else if (blockChar.isFocus && blockChar.text != "")
-                            color = Colors.brown.shade100;
-                          else if (blockChar.isDefault)
-                            color = Colors.grey.shade400;
-
-                          if (tapBoxIndex == "${index}-${indexChar}" &&
-                              !isFinish) color = Colors.blue.shade100;
-
-                          if (this.isFinish)
-                            colorText = Colors.white;
-                          else if (blockChar.isExist) colorText = Colors.red;
+                        physics: const ScrollPhysics(),
+                        itemBuilder: (buildContext, index) {
+                          BoxInner boxInner = boxInners[index];
 
                           return Container(
-                            color: color,
+                            color: Colors.red.shade100,
                             alignment: Alignment.center,
-                            child: TextButton(
-                              onPressed: blockChar.isDefault
-                                  ? null
-                                  : () => setFocus(index, indexChar),
-                              child: Text(
-                                "${blockChar.text}",
-                                style: TextStyle(color: colorText),
+                            child: GridView.builder(
+                              itemCount: boxInner.blockChars.length,
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                childAspectRatio: 1,
+                                crossAxisSpacing: 2,
+                                mainAxisSpacing: 2,
                               ),
+                              physics: const ScrollPhysics(),
+                              itemBuilder: (buildContext, indexChar) {
+                                BlockChar blockChar =
+                                    boxInner.blockChars[indexChar];
+                                Color color = Colors.yellow.shade100;
+                                Color colorText = Colors.black;
+
+                                // change color base condition
+
+                                if (isFinish) {
+                                  color = Colors.green;
+                                } else if (blockChar.isFocus &&
+                                    blockChar.text != "") {
+                                  color = Colors.brown.shade100;
+                                } else if (blockChar.isDefault) {
+                                  color = Colors.grey.shade400;
+                                }
+
+                                if (tapBoxIndex == "${index}-${indexChar}" &&
+                                    !isFinish) color = Colors.blue.shade100;
+
+                                if (this.isFinish) {
+                                  colorText = Colors.white;
+                                } else if (blockChar.isExist) {
+                                  colorText = Colors.red;
+                                }
+
+                                return Container(
+                                  color: color,
+                                  alignment: Alignment.center,
+                                  child: TextButton(
+                                    onPressed: blockChar.isDefault
+                                        ? null
+                                        : () => setFocus(index, indexChar),
+                                    child: Text(
+                                      "${blockChar.text}",
+                                      style: TextStyle(color: colorText),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           );
                         },
                       ),
-                    );
-                  },
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(20),
-                  alignment: Alignment.center,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        child: GridView.builder(
-                          itemCount: 9,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          gridDelegate:
-                          SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 1,
-                            crossAxisSpacing: 5,
-                            mainAxisSpacing: 5,
-                          ),
-                          physics: ScrollPhysics(),
-                          itemBuilder: (buildContext, index) {
-                            return ElevatedButton(
-                              onPressed: () => setInput(index + 1),
-                              child: Text(
-                                "${index + 1}",
-                                style: TextStyle(color: Colors.black),
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        alignment: Alignment.center,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              child: GridView.builder(
+                                itemCount: 9,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  childAspectRatio: 1,
+                                  crossAxisSpacing: 5,
+                                  mainAxisSpacing: 5,
+                                ),
+                                physics: const ScrollPhysics(),
+                                itemBuilder: (buildContext, index) {
+                                  return ElevatedButton(
+                                    onPressed: () => setInput(index + 1),
+                                    child: Text(
+                                      "${index + 1}",
+                                      style: const TextStyle(color: Colors.black),
+                                    ),
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.white),
+                                    ),
+                                  );
+                                },
                               ),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                MaterialStateProperty.all<Color>(
-                                    Colors.white),
+                            ),
+                            Expanded(
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 10),
+                                child: ElevatedButton(
+                                  onPressed: () => setInput(null),
+                                  child: Container(
+                                    child: const Text(
+                                      "Clear",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                  ),
+                                ),
                               ),
-                            );
-                          },
+                            )
+                          ],
                         ),
                       ),
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: ElevatedButton(
-                            onPressed: () => setInput(null),
-                            child: Container(
-                              child: Text(
-                                "Clear",
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            isFinish
+                ? Positioned(
+                    child: Lottie.asset('assests/win_animation.json',
+                        width: MediaQuery.of(context).size.width,
+              height:  MediaQuery.of(context).size.height),
+              top: 0,
+                  )
+                : Container(),
+          ],
         ),
       ),
     );
@@ -195,21 +222,22 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
   generatePuzzle() {
     // install plugins sudoku generator to generate one
     boxInners.clear();
-    var sudokuGenerator = SudokuGenerator(emptySquares: widget.difficultyStatus); //54
+    var sudokuGenerator =
+        SudokuGenerator(emptySquares: (widget.difficultyStatus + 1) * 2); //54
     // then we populate to get a possible cmbination
     // Quiver for easy populate collection using partition
     List<List<List<int>>> completes = partition(sudokuGenerator.newSudokuSolved,
-        sqrt(sudokuGenerator.newSudoku.length).toInt())
+            sqrt(sudokuGenerator.newSudoku.length).toInt())
         .toList();
     partition(sudokuGenerator.newSudoku,
-        sqrt(sudokuGenerator.newSudoku.length).toInt())
+            sqrt(sudokuGenerator.newSudoku.length).toInt())
         .toList()
         .asMap()
         .entries
         .forEach(
-          (entry) {
+      (entry) {
         List<int> tempListCompletes =
-        completes[entry.key].expand((element) => element).toList();
+            completes[entry.key].expand((element) => element).toList();
         List<int> tempList = entry.value.expand((element) => element).toList();
 
         tempList.asMap().entries.forEach((entryIn) {
@@ -254,7 +282,7 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
     this.boxInners.forEach((element) => element.clearFocus());
 
     boxInners.where((element) => element.index ~/ 3 == rowNoBox).forEach(
-            (e) => e.setFocus(focusClass.indexChar!, Direction.horizontal));
+        (e) => e.setFocus(focusClass.indexChar!, Direction.horizontal));
 
     boxInners
         .where((element) => element.index % 3 == colNoBox)
@@ -265,8 +293,10 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
     // set input data based grid
     // or clear out data
     if (focusClass.indexBox == null) return;
-    if (boxInners[focusClass.indexBox!].blockChars[focusClass.indexChar!].text ==
-        number.toString() ||
+    if (boxInners[focusClass.indexBox!]
+                .blockChars[focusClass.indexChar!]
+                .text ==
+            number.toString() ||
         number == null) {
       boxInners.forEach((element) {
         element.clearFocus();
@@ -298,7 +328,7 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
     int colNoBox = focusClass.indexBox! % 3;
 
     String textInput =
-    boxInners[focusClass.indexBox!].blockChars[focusClass.indexChar!].text!;
+        boxInners[focusClass.indexBox!].blockChars[focusClass.indexChar!].text!;
 
     boxInners.forEach((element) => element.clearExist());
 
@@ -327,5 +357,9 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
         .length;
 
     isFinish = totalUnfinish == 0;
+
+    if (isFinish) {
+      shared_preferences.setPlayerLevel(widget.difficultyStatus + 2);
+    }
   }
 }
