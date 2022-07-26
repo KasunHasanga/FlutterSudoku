@@ -5,6 +5,7 @@ import 'package:sudoku_puzzle/views/block_char.dart';
 import 'package:sudoku_solver_generator/sudoku_solver_generator.dart';
 import 'package:sudoku_puzzle/views/box_inner.dart';
 import 'package:sudoku_puzzle/views/focus_class.dart';
+import 'package:sudoku_puzzle/services/shared_preferences.dart' as shared_preferences;
 
 class SudokuHomePage extends StatefulWidget {
   int difficultyStatus;
@@ -42,6 +43,9 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+          onPressed: () => Navigator.pop(context, true),
+        ),
         actions: [
           ElevatedButton(
               onPressed: () => generateSudoku(), child: Icon(Icons.refresh)),
@@ -195,7 +199,7 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
   generatePuzzle() {
     // install plugins sudoku generator to generate one
     boxInners.clear();
-    var sudokuGenerator = SudokuGenerator(emptySquares: widget.difficultyStatus); //54
+    var sudokuGenerator = SudokuGenerator(emptySquares:  (widget.difficultyStatus+1)*2); //54
     // then we populate to get a possible cmbination
     // Quiver for easy populate collection using partition
     List<List<List<int>>> completes = partition(sudokuGenerator.newSudokuSolved,
@@ -327,5 +331,10 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
         .length;
 
     isFinish = totalUnfinish == 0;
+
+    if(isFinish){
+      shared_preferences.setPlayerLevel(widget.difficultyStatus+2);
+
+    }
   }
 }
