@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sudoku_puzzle/services/shared_preferences.dart'
     as shared_preferences;
+import 'package:sudoku_puzzle/views/setting_screen/setting.dart';
 import 'package:sudoku_puzzle/views/sudoku_home_page.dart';
 
 class MiddleScreen extends StatefulWidget {
@@ -30,6 +31,21 @@ class _MiddleScreenState extends State<MiddleScreen> {
       backgroundColor: const Color(0xff46e7d2),
       appBar: AppBar(
         elevation: 0,
+        leading: GestureDetector(
+          child: Icon(Icons.settings),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SettingPage()),
+            );
+          },
+        ),
+        title: const Text(
+          "Sudoku",
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.w600, fontSize: 28),
+        ),
+        centerTitle: true,
         backgroundColor: const Color(0xff46e7d2),
       ),
       body: SingleChildScrollView(
@@ -39,13 +55,6 @@ class _MiddleScreenState extends State<MiddleScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                "Sudoku",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 28),
-              ),
               ListView.builder(
                 itemBuilder: (context, index) {
                   return levelWidget(index);
