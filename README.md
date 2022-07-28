@@ -1,16 +1,17 @@
-# sudoku_puzzle
+# Flutter Sudoku Puzzle Clone
+- Splash Screen
+- Different Game Levels
+- Win Animation
+- Free play Sudoku
 
-A new Flutter project.
+### Contribution are welcome
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Screnshot 
+![3](https://user-images.githubusercontent.com/44415252/181580064-46501953-bea0-4826-a2c3-88e2814a93a2.png)
+![2](https://user-images.githubusercontent.com/44415252/181580088-6a4760b9-91b9-46bd-b409-55de2d7065d7.png)
+![1](https://user-images.githubusercontent.com/44415252/181580093-0c7516a3-6d37-490f-8e3e-99084fd1ba0a.png)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
