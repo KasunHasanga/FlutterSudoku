@@ -147,19 +147,21 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
                         alignment: Alignment.center,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Container(
                               child: GridView.builder(
                                 itemCount: 9,
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
+                                // reverse: true,
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
                                   childAspectRatio: 1,
                                   crossAxisSpacing: 5,
                                   mainAxisSpacing: 5,
+
                                 ),
                                 physics: const ScrollPhysics(),
                                 itemBuilder: (buildContext, index) {
@@ -180,6 +182,7 @@ class _SudokuHomePageState extends State<SudokuHomePage> {
                             ),
                             Expanded(
                               child: Container(
+                                width: double.infinity,
                                 margin: const EdgeInsets.only(left: 10),
                                 child: ElevatedButton(
                                   onPressed: () => setInput(null),

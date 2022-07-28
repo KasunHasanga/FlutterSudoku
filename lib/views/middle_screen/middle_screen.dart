@@ -27,7 +27,8 @@ class _MiddleScreenState extends State<MiddleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff46e7d2),
+      // backgroundColor: const Color(0xff46e7d2),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         leading: GestureDetector(
@@ -42,10 +43,11 @@ class _MiddleScreenState extends State<MiddleScreen> {
         title: const Text(
           "Sudoku",
           style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.w600, fontSize: 28),
+              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 28),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xff46e7d2),
+        backgroundColor: Colors.white,
+        // backgroundColor: const Color(0xff46e7d2),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -93,14 +95,15 @@ class _MiddleScreenState extends State<MiddleScreen> {
                       difficultyStatus: index,
                     )),
           );
+          if (result == true) {
+            initilization();
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("You haven`t unlock this level yet"),
           ));
         }
-        if (result == true) {
-          initilization();
-        }
+
       },
     );
   }
